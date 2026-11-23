@@ -1,0 +1,23 @@
+# Virtual environments
+.venv/
+venv/
+
+# PyCharm / IntelliJ IDEA
+.idea/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Python testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+.env.*
+
+# Operating system files
+.DS_Store
+Thumbs.db
