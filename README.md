@@ -15,7 +15,7 @@ A personal Python project to build a Breakout game and develop an AI agent that 
 
 ## Development Philosophy
 
-My goal is to write **100% of the project's source code myself**. I may use AI tools to learn concepts, discuss approaches, review my work, or study examples, but I do not copy AI-generated code into the project.
+My goal is to write **nearly 100% of the project's source code myself**. I may use AI tools to learn concepts, discuss approaches, review my work, or study examples, but I do not copy AI-generated code into the project, with the exception of AI-assisted code completion provided by my IDE.
 
 ## Planned Tech Stack
 
