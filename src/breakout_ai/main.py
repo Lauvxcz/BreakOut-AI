@@ -65,7 +65,7 @@ class Main:
         delta_time = now - self._previous_time
         self._previous_time = now
 
-        self._accumulator += delta_time
+        self._accumulator += delta_time * config.TIME_SCALE
 
         while self._accumulator > config.PHYSICS_DT:
             self._accumulator -= config.PHYSICS_DT
