@@ -1,39 +1,73 @@
+import time
+
 import pygame
 
 from breakout_ai import config
 from breakout_ai.game.display import Display
+from breakout_ai.game.keyboard import Keyboard
+from breakout_ai.game.paddle import Paddle
 
-pygame.init()
+class Main:
+    def __init__(self):
+        pygame.init()
+        pygame.display.set_caption("Breakout AI")
 
-screen = pygame.display.set_mode((config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
+        self.screen = pygame.display.set_mode((config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT))
 
-hud_surface = pygame.Surface((config.DISPLAY_WIDTH, config.HUD_HEIGHT))
-game_surface = pygame.Surface((config.DISPLAY_WIDTH, config.GAME_HEIGHT))
+        self.hud_surface = pygame.Surface((config.DISPLAY_WIDTH, config.HUD_HEIGHT))
+        self.game_surface = pygame.Surface((config.DISPLAY_WIDTH, config.GAME_HEIGHT))
 
-pygame.display.set_caption("Breakout AI")
+        self.clock = pygame.time.Clock()
+        self.running = True
 
-clock = pygame.time.Clock()
-running = True
+        # Objects
+        self.paddle = Paddle()
+        self.keyboard = Keyboard(self.paddle)
+        self.display = Display(self.hud_surface, self.game_surface, self.paddle)
 
-display = Display(hud_surface, game_surface)
+        # Variables
+        self._previous_time = time.perf_counter()
+        self._accumulator = 0
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
 
-    # FPS Limit
-    clock.tick(60)
+            # FPS Limit
+            self.clock.tick(config.TARGET_FPS)
 
-    # Background
-    hud_surface.fill(config.HUD_COLOR)
-    game_surface.fill(config.GAME_COLOR)
+            # Background
+            self.hud_surface.fill(config.HUD_COLOR)
+            self.game_surface.fill(config.GAME_COLOR)
 
-    display.render()
+            self.keyboard.input_handler()
 
-    # Update Screen
-    screen.blit(hud_surface, (0, 0))
-    screen.blit(game_surface, (0, config.HUD_HEIGHT))
-    pygame.display.flip()
+            self._physics_handler()
 
-pygame.quit()
+            self.display.render()
+
+            # Update Screen
+            self.screen.blit(self.hud_surface, (0, 0))
+            self.screen.blit(self.game_surface, (0, config.HUD_HEIGHT))
+            pygame.display.flip()
+
+        pygame.quit()
+
+
+    def _physics_handler(self):
+        now = time.perf_counter()
+        delta_time = now - self._previous_time
+        self._previous_time = now
+
+        self._accumulator += delta_time
+
+        while self._accumulator > config.PHYSICS_DT:
+            self._accumulator -= config.PHYSICS_DT
+
+            self.paddle.move()
+
+if __name__ == "__main__":
+    main = Main()
+    main.run()

@@ -1,0 +1,26 @@
+from breakout_ai import config
+
+class Paddle:
+    def __init__(self):
+        self.x = config.DISPLAY_WIDTH // 2 - config.PADDLE_WIDTH // 2
+        self.y = config.GAME_HEIGHT - config.PADDLE_HEIGHT - config.PADDLE_BOTTOM_OFFSET
+        self.direction = 0
+
+    def get_coordinates(self):
+        return self.x, self.y
+
+    def move(self):
+        if self.direction == -1:
+            self._move_left()
+        elif self.direction == 1:
+            self._move_right()
+
+    def _move_left(self):
+        self.x -= config.PADDLE_SPEED * config.PHYSICS_DT
+        if self.x < 0:
+            self.x = 0
+
+    def _move_right(self):
+        self.x += config.PADDLE_SPEED * config.PHYSICS_DT
+        if self.x > config.DISPLAY_WIDTH - config.PADDLE_WIDTH:
+            self.x = config.DISPLAY_WIDTH - config.PADDLE_WIDTH
