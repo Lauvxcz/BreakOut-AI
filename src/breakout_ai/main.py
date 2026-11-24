@@ -4,6 +4,7 @@ import pygame
 
 from breakout_ai import config
 from breakout_ai.game.ball import Ball
+from breakout_ai.game.bricks import Bricks
 from breakout_ai.game.display import Display
 from breakout_ai.game.keyboard import Keyboard
 from breakout_ai.game.paddle import Paddle
@@ -22,10 +23,11 @@ class Main:
         self.running = True
 
         # Objects
+        self.bricks = Bricks()
         self.paddle = Paddle()
         self.ball = Ball(self.paddle)
         self.keyboard = Keyboard(self.paddle, self.ball)
-        self.display = Display(self.hud_surface, self.game_surface, self.paddle, self.ball)
+        self.display = Display(self.hud_surface, self.game_surface, self.paddle, self.ball, self.bricks)
 
         # Variables
         self._previous_time = time.perf_counter()

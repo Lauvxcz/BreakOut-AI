@@ -4,7 +4,7 @@ from breakout_ai import config
 
 
 class Display:
-    def __init__(self, hud_surface, game_surface, paddle, ball):
+    def __init__(self, hud_surface, game_surface, paddle, ball, bricks):
         self._hud_screen = hud_surface
         self._game_screen = game_surface
 
@@ -12,6 +12,7 @@ class Display:
 
         self._paddle = paddle
         self._ball = ball
+        self._bricks = bricks
 
 
     def render(self):
@@ -61,11 +62,11 @@ class Display:
         pygame.draw.rect(self._game_screen, config.PADDLE_COLOR, (x, y, config.PADDLE_WIDTH, config.PADDLE_HEIGHT))
 
     def draw_bricks(self):
-        brick = [[True for _ in range(config.BRICKS_COLUMNS)] for _ in range(config.BRICKS_ROWS)] # static for the moment
+        bricks = self._bricks.get_bricks()
+        brick_bounds = self._bricks.get_brick_bounds()
 
         for row in range(config.BRICKS_ROWS):
             for column in range(config.BRICKS_COLUMNS):
-                if brick[row][column]:
-                    pygame.draw.rect(self._game_screen, config.BRICKS_ROW_COLORS[row], (
-                        config.BRICKS_FIRST_COLUMN_X + column * (config.BRICKS_WIDTH + config.BRICKS_SPACING_H), config.BRICKS_FIRST_ROW_Y + row * (
-                                config.BRICKS_HEIGHT + config.BRICKS_SPACING_V), config.BRICKS_WIDTH, config.BRICKS_HEIGHT))
+                if bricks[row][column]:
+                    start_x, start_y, end_x, end_y = brick_bounds[row][column]
+                    pygame.draw.rect(self._game_screen, config.BRICKS_ROW_COLORS[row], (start_x, start_y, end_x - start_x, end_y - start_y))
