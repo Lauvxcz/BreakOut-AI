@@ -4,12 +4,13 @@ from breakout_ai import config
 
 
 class Display:
-    def __init__(self, hud_surface, game_surface, paddle, ball, bricks):
+    def __init__(self, hud_surface, game_surface, paddle, ball, bricks, game_stats):
         self._hud_screen = hud_surface
         self._game_screen = game_surface
 
         self._score_font = pygame.font.Font(config.FONT_PRESSSTART2P_PATH, config.FONT_SCORE_SIZE)
 
+        self._game_stats = game_stats
         self._paddle = paddle
         self._ball = ball
         self._bricks = bricks
@@ -26,7 +27,7 @@ class Display:
         self.draw_bricks()
 
     def draw_score(self):
-        score = 100
+        score = self._game_stats.get_score()
 
         score_text = self._score_font.render(f"{score:05d}", True, config.HUD_TEXT_COLOR)
         score_area = pygame.Rect(0, 0, (config.DISPLAY_WIDTH - 200), config.HUD_HEIGHT)
@@ -34,15 +35,15 @@ class Display:
         self._hud_screen.blit(score_text, score_text_rect)
 
     def draw_lives(self):
-        lives = 2 # static for the moment
+        lives = self._game_stats.get_lives()
 
         lives_area = pygame.Rect((config.DISPLAY_WIDTH - 300), 0, 300, config.HUD_HEIGHT)
 
-        total_width = config.MAX_LIVES * config.HEART_WIDTH + (config.MAX_LIVES - 1) * config.HEART_SPACING
+        total_width = config.INITIAL_LIVES * config.HEART_WIDTH + (config.INITIAL_LIVES - 1) * config.HEART_SPACING
         hearts_rect = pygame.Rect(0, 0, total_width, config.HEART_HEIGHT)
         hearts_rect.center = lives_area.center
 
-        for live_index in range(config.MAX_LIVES):
+        for live_index in range(config.INITIAL_LIVES):
             color = config.HEART_FULL_COLOR if live_index < lives else config.HEART_EMPTY_COLOR
 
             for row_index, row in enumerate(config.HEART_PATTERN):
