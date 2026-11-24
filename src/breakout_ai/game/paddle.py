@@ -16,11 +16,11 @@ class Paddle:
             self._move_right()
 
     def _move_left(self):
-        self.x -= config.PADDLE_SPEED * config.PHYSICS_DT
-        if self.x < 0:
-            self.x = 0
+        self._x -= config.PADDLE_SPEED * config.PHYSICS_DT
+        if self._x < 0:
+            self._x = 0
 
     def _move_right(self):
-        self.x += config.PADDLE_SPEED * config.PHYSICS_DT
-        if self.x > config.DISPLAY_WIDTH - config.PADDLE_WIDTH:
-            self.x = config.DISPLAY_WIDTH - config.PADDLE_WIDTH
+        self._x += config.PADDLE_SPEED * config.PHYSICS_DT
+        if self._x > config.DISPLAY_WIDTH - config.PADDLE_WIDTH:
+            self._x = config.DISPLAY_WIDTH - config.PADDLE_WIDTH
