@@ -4,11 +4,14 @@ from breakout_ai import config
 
 
 class Display:
-    def __init__(self, hud_surface, game_surface):
+    def __init__(self, hud_surface, game_surface, paddle):
         self.hud_screen = hud_surface
         self.game_screen = game_surface
 
-        self.score_font = pygame.font.Font(config.FONT_PressStart2P_PATH, config.FONT_SCORE_SIZE)
+        self.score_font = pygame.font.Font(config.FONT_PRESSSTART2P_PATH, config.FONT_SCORE_SIZE)
+
+        self.paddle = paddle
+
 
     def render(self):
         # HUD
@@ -54,9 +57,8 @@ class Display:
         pygame.draw.circle(self.game_screen, config.BALL_COLOR, (ball_x, ball_y), config.BALL_RADIUS)
 
     def draw_paddle(self):
-        paddle_x = 250 # static for the moment
-
-        pygame.draw.rect(self.game_screen, config.PADDLE_COLOR, (paddle_x, config.PADDLE_Y_COORD, config.PADDLE_WIDTH, config.PADDLE_HEIGHT))
+        x, y = self.paddle.get_coordinates()
+        pygame.draw.rect(self.game_screen, config.PADDLE_COLOR, (x, y, config.PADDLE_WIDTH, config.PADDLE_HEIGHT))
 
     def draw_bricks(self):
         brick = [[True for _ in range(config.BRICKS_COLUMNS)] for _ in range(config.BRICKS_ROWS)] # static for the moment
